@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Holla – Connect instantly</title>
+  <link rel="stylesheet" href="style.css">
+
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+</head>
+<body>
+<header>
+  <div class="container">
+    <nav>
+      <div class="logo">Holla<span>.</span></div>
+      <div class="hamburger" onclick="toggleMenu()">☰</div>
+      <div class="nav-links" id="navLinks">
+        <a href="#features">Features</a>
+        <a href="#download">Download</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container">
+    <h1>Connect instantly with <span>Holla</span></h1>
+    <p>Real‑time chat, voice notes, file sharing, and crystal‑clear calls – all in one app. Try it right now in your browser!</p>
+    <div class="hero-buttons">
+      <a href="#download" class="btn btn-outline">📲 Get the App</a>
+    </div>
+  </div>
+</section>
+<section class="features" id="features">
+  <div class="container">
+    <h2>Everything you need</h2>
+    <p class="features-sub">Holla brings your conversations to life with powerful features.</p>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <span class="feature-icon">💬</span>
+        <h3>One‑on‑one &amp; Groups</h3>
+        <p>Chat privately or create group conversations with friends, family, or colleagues.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🎤</span>
+        <h3>Voice Notes</h3>
+        <p>Record and send voice messages instantly – perfect when you can't type.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">📎</span>
+        <h3>File Sharing</h3>
+        <p>Share images, videos, documents, and more with ease.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🟢</span>
+        <h3>Online / Offline Status</h3>
+        <p>See who's available and when they were last seen.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">📹</span>
+        <h3>Video &amp; Audio Calls</h3>
+        <p>High‑quality calls with WebRTC technology – clear and reliable.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🔔</span>
+        <h3>Push Notifications</h3>
+        <p>Stay updated with FCM‑powered notifications, even when the app is closed.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="download" id="download">
+  <div class="container">
+    <h2>Get the full experience</h2>
+    <p>Download the native Android app for fast, secure, and feature‑rich messaging.</p>
+    <div class="download-badges">
+      <a href="#" target="_blank">
+        <img class="badge" src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" />
+      </a>
+      <a href="#" class="btn btn-dark">📦 Download APK</a>
+    </div>
+    <p style="margin-top: 24px; font-size: 15px; color: #94a3b8;">
+      Coming soon to iOS and other platforms.
+    </p>
+  </div>
+</section>
+<footer>
+  <div class="container">
+    <div class="logo" style="font-size:24px;">Holla<span>.</span></div>
+    <div>
+      <a href="#features">Features</a>
+      <a href="#download">Download</a>
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+    </div>
+    <div class="footer-copy">
+      &copy; 2025 Holla – Made with ❤️ for better connections.
+    </div>
+  </div>
+</footer>
+<script>
+  function toggleMenu() {
+    document.getElementById('navLinks').classList.toggle('open');
+  }
+
+  // ----- Firebase Configuration (Replace with YOUR config) -----
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT.appspot.com",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+  };
+
+  // Initialize Firebase (only if config is not placeholder)
+  let db = null;
+  let isFirebaseReady = false;
+
+  try {
+    if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
+      firebase.initializeApp(firebaseConfig);
+      db = firebase.firestore();
+      isFirebaseReady = true;
+      console.log('✅ Firebase initialized');
+    } else {
+      console.warn('⚠️ Firebase not configured – chat demo will not work.');
+      document.getElementById('chatStatus').textContent = '⚠️ Firebase not set up. Please configure.';
+    }
+  } catch (e) {
+    console.error('Firebase init error:', e);
+    document.getElementById('chatStatus').textContent = '❌ Firebase error: ' + e.message;
+  }
+
+  // ----- Chat State -----
+  let currentUser = null;
+  let messageListener = null;
+
+  const usernameInput = document.getElementById('usernameInput');
+  const joinBtn = document.getElementById('joinBtn');
+  const messageBox = document.getElementById('messageBox');
+  const messageInput = document.getElementById('messageInput');
+  const sendBtn = document.getElementById('sendBtn');
+  const chatStatus = document.getElementById('chatStatus');
+  const chatInputArea = document.getElementById('chatInputArea');
+  const loginArea = document.getElementById('loginArea');
+
+  // ----- Join Chat -----
+  joinBtn.addEventListener('click', joinChat);
+  usernameInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') joinChat(); });
+
+  function joinChat() {
+    const name = usernameInput.value.trim();
+    if (!name) {
+      alert('Please enter a name.');
+      return;
+    }
+    if (!isFirebaseReady) {
+      alert('Firebase is not configured. Please set up your Firebase project.');
+      return;
+    }
+    currentUser = name;
+    loginArea.style.display = 'none';
+    chatInputArea.style.display = 'flex';
+    chatStatus.textContent = '🟢 Connected as ' + currentUser;
+
+    // Subscribe to messages
+    if (messageListener) messageListener(); // remove old
+    messageListener = db.collection('messages')
+      .orderBy('timestamp', 'asc')
+      .limit(100)
+      .onSnapshot((snapshot) => {
+        // Clear and rebuild
+        messageBox.innerHTML = '';
+        snapshot.forEach((doc) => {
+          const data = doc.data();
+          addMessageToUI(data.sender, data.text, data.timestamp?.toDate?.() || new Date());
+        });
+        scrollToBottom();
+      }, (error) => {
+        console.error('Snapshot error:', error);
+        chatStatus.textContent = '❌ Error loading messages: ' + error.message;
+      });
+
+    // Send a system message
+    addSystemMessage('👋 ' + currentUser + ' joined the chat.');
+  }
+
+  // ----- Send Message -----
+  sendBtn.addEventListener('click', sendMessage);
+  messageInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') sendMessage(); });
+
+  function sendMessage() {
+    const text = messageInput.value.trim();
+    if (!text || !currentUser || !isFirebaseReady) return;
+    messageInput.value = '';
+
+    db.collection('messages').add({
+      sender: currentUser,
+      text: text,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    }).catch((error) => {
+      console.error('Send error:', error);
+      chatStatus.textContent = '❌ Failed to send: ' + error.message;
+    });
+  }
+
+  // ----- UI Helpers -----
+  function addMessageToUI(sender, text, time) {
+    const div = document.createElement('div');
+    div.className = 'message ' + (sender === currentUser ? 'own' : 'other');
+    const timeStr = time ? time.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) : '';
+    div.innerHTML = `<span class="sender">${sender}</span> ${text} <span class="time">${timeStr}</span>`;
+    messageBox.appendChild(div);
+  }
+
+  function addSystemMessage(text) {
+    const div = document.createElement('div');
+    div.style.cssText = 'text-align:center;font-size:14px;color:#94a3b8;padding:4px;font-style:italic;';
+    div.textContent = text;
+    messageBox.appendChild(div);
+  }
+
+  function scrollToBottom() {
+    messageBox.scrollTop = messageBox.scrollHeight;
+  }
+
+  // Auto-scroll on new messages (MutationObserver)
+  const observer = new MutationObserver(() => scrollToBottom());
+  observer.observe(messageBox, { childList: true });
+
+  // ----- Firebase error handling (if config missing) -----
+  // If config is missing, show a message
+  if (!isFirebaseReady) {
+    document.getElementById('chatStatus').textContent = '⚠️ Firebase not configured – please update firebaseConfig.';
+  }
+
+  // For demo, if no Firebase, we can still show a mock (but we'll rely on real setup)
+</script>
+
+</body>
+</html>

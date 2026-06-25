@@ -1,0 +1,283 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+}
+body {
+    background: #f5f7fa;
+    color: #1e293b;
+    line-height: 1.6;
+}
+a {
+    text-decoration: none;
+    color: inherit;
+}
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+header {
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 0;
+}
+.logo {
+    font-size: 28px;
+    font-weight: 700;
+    color: #0d9488;
+    letter-spacing: -0.5px;
+}
+.logo span {
+    color: #f43f5e;
+}
+.nav-links {
+    display: flex;
+    gap: 32px;
+    align-items: center;
+}
+.nav-links a {
+    font-weight: 500;
+    color: #475569;
+    transition: color 0.2s;
+}
+.nav-links a:hover {
+    color: #0d9488;
+}
+.nav-cta {
+    background: #0d9488;
+    color: white !important;
+    padding: 8px 20px;
+    border-radius: 40px;
+    font-weight: 600;
+}
+.nav-cta:hover {
+    background: #0f766e !important;
+}
+.hamburger {
+    display: none;
+    font-size: 28px;
+    cursor: pointer;
+    user-select: none;
+}
+.hero {
+    padding: 80px 0 60px;
+    text-align: center;
+    background: linear-gradient(145deg, #f0fdfa, #ffffff);
+}
+.hero h1 {
+    font-size: 48px;
+    font-weight: 800;
+    margin-bottom: 16px;
+    letter-spacing: -1px;
+}
+.hero h1 span {
+    color: #0d9488;
+}
+.hero p {
+    font-size: 20px;
+    color: #64748b;
+    max-width: 600px;
+    margin: 0 auto 32px;
+}
+.hero-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.btn {
+    display: inline-block;
+    padding: 14px 36px;
+    border-radius: 40px;
+    font-weight: 600;
+    font-size: 16px;
+    transition: all 0.2s;
+    border: none;
+    cursor: pointer;
+}
+.btn-primary {
+    background: #0d9488;
+    color: white;
+}
+.btn-primary:hover {
+    background: #0f766e;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(13,148,136,0.3);
+}
+.btn-outline {
+    background: transparent;
+    color: #0d9488;
+    border: 2px solid #0d9488;
+}
+.btn-outline:hover {
+    background: #0d9488;
+    color: white;
+}
+.btn-dark {
+    background: #1e293b;
+    color: white;
+}
+.btn-dark:hover {
+    background: #0f172a;
+}
+.features {
+    padding: 80px 0;
+    background: white;
+}
+.features h2 {
+    text-align: center;
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+.features-sub {
+    text-align: center;
+    color: #64748b;
+    font-size: 18px;
+    margin-bottom: 48px;
+}
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 32px;
+}
+.feature-card {
+    background: #f8fafc;
+    padding: 28px 20px;
+    border-radius: 20px;
+    text-align: center;
+    transition: 0.2s;
+    border: 1px solid #e2e8f0;
+}
+.feature-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.05);
+    border-color: #0d9488;
+}
+.feature-icon {
+    font-size: 40px;
+    margin-bottom: 12px;
+    display: block;
+}
+.feature-card h3 {
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+.feature-card p {
+    color: #64748b;
+    font-size: 15px;
+}
+.download {
+    padding: 80px 0;
+    background: #ffffff;
+    text-align: center;
+}
+.download h2 {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+.download p {
+    color: #64748b;
+    font-size: 18px;
+    margin-bottom: 32px;
+}
+.download-badges {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.badge {
+    height: 60px;
+    transition: 0.2s;
+}
+.badge:hover {
+    transform: scale(1.05);
+}
+footer {
+    background: #1e293b;
+    color: #cbd5e1;
+    padding: 40px 0 24px;
+    text-align: center;
+}
+footer .container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+footer a {
+    color: #94a3b8;
+    margin: 0 12px;
+}
+footer a:hover {
+    color: #0d9488;
+}
+footer .logo {
+    color: white;
+}
+footer .logo span {
+    color: #f43f5e;
+}
+.footer-copy {
+    font-size: 14px;
+    color: #94a3b8;
+    margin-top: 12px;
+}
+@media (max-width: 768px) {
+    .nav-links {
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+      padding: 16px 0;
+      width: 100%;
+      background: white;
+    }
+    .nav-links.open {
+      display: flex;
+    }
+    .hamburger {
+      display: block;
+    }
+    .hero h1 {
+      font-size: 32px;
+    }
+    .hero p {
+      font-size: 18px;
+    }
+    .features h2, .webapp h2, .download h2 {
+      font-size: 28px;
+    }
+    .chat-container {
+      padding: 16px;
+    }
+    .chat-box {
+      height: 250px;
+    }
+  }
+  @media (max-width: 480px) {
+    .hero-buttons .btn {
+      width: 100%;
+      text-align: center;
+    }
+    .chat-login {
+      flex-direction: column;
+    }
+    .chat-input {
+      flex-direction: column;
+    }
+    .chat-input button {
+      width: 100%;
+    }  
+}
